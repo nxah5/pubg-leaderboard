@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: pubg-leaderboard
+    runtime: docker
+    plan: free
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PUBG_API_KEY
+        sync: false
