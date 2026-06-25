@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PUBG Match Leaderboard</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">PUBG API Match Scoring</p>
+            <h1>라운드 리더보드</h1>
+          </div>
+          <div class="top-actions">
+            <a class="secondary-link" href="/obs.html" target="_blank" rel="noreferrer">OBS 화면</a>
+            <div class="status-pill" id="apiStatus">API 상태 확인 중</div>
+          </div>
+        </header>
+
+        <section class="control-grid" aria-label="리더보드 설정">
+          <article class="panel search-panel">
+            <div class="panel-title-row">
+              <div>
+                <h2>플레이어 조회</h2>
+                <p>닉네임으로 최근 매치 ID를 찾습니다.</p>
+              </div>
+              <button class="icon-button" id="clearSearch" type="button" title="조회 결과 지우기">×</button>
+            </div>
+
+            <label class="field-label" for="apiKeyInput">세션 API 키</label>
+            <div class="inline-controls">
+              <input id="apiKeyInput" type="password" autocomplete="off" placeholder=".env를 쓰면 비워둬도 됩니다">
+              <button id="forgetApiKey" type="button">지우기</button>
+            </div>
+
+            <div class="split-fields">
+              <label>
+                <span>플랫폼</span>
+                <select id="platformSelect">
+                  <option value="steam">Steam</option>
+                  <option value="kakao">Kakao</option>
+                  <option value="tournament">Tournament</option>
+                  <option value="console">Console</option>
+                  <option value="psn">PSN</option>
+                  <option value="xbox">Xbox</option>
+                </select>
+              </label>
+              <label>
+                <span>라운드 수</span>
+                <div class="round-count-control">
+                  <button id="roundMinus" type="button" title="라운드 줄이기">-</button>
+                  <select id="roundCount"></select>
+                  <button id="roundPlus" type="button" title="라운드 늘리기">+</button>
+                </div>
+              </label>
+            </div>
+
+            <label class="field-label" for="playerNames">플레이어 닉네임</label>
+            <textarea id="playerNames" rows="4" placeholder="예: PlayerOne, PlayerTwo"></textarea>
+            <div class="button-row">
+              <button id="findMatches" type="button" class="primary-button">최근 매치 조회</button>
+              <button id="loadMock" type="button">샘플 5라운드</button>
+            </div>
+            <div id="recentMatches" class="recent-list" aria-live="polite"></div>
+          </article>
+
+          <article class="panel rules-panel">
+            <div class="panel-title-row">
+              <div>
+                <h2>점수 룰셋</h2>
+                <p>수정하면 리더보드가 즉시 다시 계산됩니다.</p>
+              </div>
+              <button id="resetRules" type="button">기본값</button>
+            </div>
+            <label class="kill-rule">
+              <span>킬당 점수</span>
+              <input id="killPoint" type="number" min="0" step="0.5" value="1">
+            </label>
+            <div id="placementRules" class="rule-grid"></div>
+          </article>
+        </section>
+
+        <section class="panel rounds-panel" aria-label="라운드 매치 입력">
+          <div class="panel-title-row">
+            <div>
+              <h2>라운드 매치</h2>
+              <p>매치 ID를 입력하거나 최근 매치에서 라운드에 넣으세요.</p>
+            </div>
+            <button id="fetchAllRounds" type="button">전체 동기화</button>
+          </div>
+          <div id="roundList" class="round-list"></div>
+        </section>
+
+        <section class="panel teams-panel" aria-label="팀명 관리">
+          <div class="panel-title-row">
+            <div>
+              <h2>팀명 관리</h2>
+              <p>팀 번호 seed 기준으로 이름을 저장합니다.</p>
+            </div>
+            <button id="resetTeamNames" type="button">팀명 초기화</button>
+          </div>
+          <div id="teamSeedList" class="team-seed-list"></div>
+        </section>
+
+        <section class="panel leaderboard-panel" aria-label="종합 리더보드">
+          <div class="panel-title-row leaderboard-title-row">
+            <div>
+              <h2>종합 순위</h2>
+              <p id="leaderboardMeta">라운드 정보가 들어오면 자동 집계됩니다.</p>
+            </div>
+            <div class="leaderboard-actions">
+              <a class="secondary-link" href="/obs.html" target="_blank" rel="noreferrer">OBS 화면</a>
+              <button id="exportCsv" type="button">CSV 내보내기</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>등수</th>
+                  <th>팀명</th>
+                  <th>순위점수</th>
+                  <th>킬점수</th>
+                  <th>종합점수</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <template id="recentMatchTemplate">
+      <article class="recent-item">
+        <div>
+          <strong></strong>
+          <span></span>
+        </div>
+        <div class="recent-actions"></div>
+      </article>
+    </template>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
