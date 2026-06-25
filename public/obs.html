@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PUBG Leaderboard OBS</title>
+    <link rel="stylesheet" href="/obs.css">
+  </head>
+  <body>
+    <main class="overlay-board">
+      <header class="overlay-header">
+        <div>
+          <p>PUBG MATCH LEADERBOARD</p>
+          <h1>종합 순위</h1>
+        </div>
+        <div id="overlayMeta" class="overlay-meta">대기 중</div>
+      </header>
+
+      <table class="overlay-table">
+        <thead>
+          <tr>
+            <th>등수</th>
+            <th>팀명</th>
+            <th>순위점수</th>
+            <th>킬점수</th>
+            <th>종합</th>
+          </tr>
+        </thead>
+        <tbody id="overlayBody"></tbody>
+      </table>
+    </main>
+
+    <script src="/obs.js" type="module"></script>
+  </body>
+</html>
